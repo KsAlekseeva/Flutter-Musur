@@ -1,16 +1,19 @@
-# musur
+# Musur
 
 A new Flutter project.
 
-## Getting Started
+## Building
 
-This project is a starting point for a Flutter application.
+This section is only for collaborators.
 
-A few resources to get you started if this is your first Flutter project:
+The built app must be signed, otherwise Spotify SDK won't work.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+To do that, after cloning a project, add `android/key.properties` file with the
+following contents:
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+storePassword=<password>
+keyPassword=<password>
+keyAlias=musur
+storeFile=<path-to-your/musur-keystore.jks>
+```
