@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:musur/musur.dart';
+import 'package:musur/routes/my_playlist.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const ProviderScope(
-    child: MusurApp(),
-  ));
+  runApp(ProviderScope(child: MaterialApp(
+    debugShowCheckedModeBanner: false,
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+    ),
+    routes: {
+      "My playlist": (context) => const MyPlaylist(),
+    },
+    home: HomeRoute(),
+  ),),);
 }
 
 class MusurApp extends ConsumerStatefulWidget {

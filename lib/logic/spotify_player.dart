@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:musur/musur.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
+import 'package:spotify/spotify.dart';
 
 final spotifyPlayerProvider = Provider(
   (ref) => SpotifyPlayer(

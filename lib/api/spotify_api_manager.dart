@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
-export 'package:spotify/spotify.dart';
 import 'package:musur/musur.dart';
+import 'package:spotify/spotify.dart';
 
 final spotifyApiManagerProvider = Provider(
   (ref) => SpotifyApiManager(
