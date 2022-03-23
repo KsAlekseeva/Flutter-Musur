@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:musur/musur.dart';
-import 'package:musur/routes/my_playlist.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(ProviderScope(child: MaterialApp(
-    debugShowCheckedModeBanner: false,
-    theme: ThemeData(
-      primarySwatch: Colors.blue,
-    ),
-    routes: {
-      "My playlist": (context) => const MyPlaylist(),
-    },
-    home: HomeRoute(),
-  ),),);
+  runApp(const ProviderScope(
+    child: MusurApp(),
+  ));
 }
 
 class MusurApp extends ConsumerStatefulWidget {
@@ -25,19 +17,17 @@ class MusurApp extends ConsumerStatefulWidget {
 }
 
 class _MusurAppState extends ConsumerState<MusurApp> {
-  static const _appTitle = 'Musur';
-
   @override
   void initState() {
     super.initState();
 
     // Post framing it, because otherwise go_router might not create the initial home route.
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
       final prefs = ref.read(prefsProvider);
-      prefs.init();
+      await prefs.init();
 
       final contentManager = ref.read(contentManagerProvider);
-      contentManager.init();
+      await contentManager.init();
     });
   }
 
@@ -47,7 +37,7 @@ class _MusurAppState extends ConsumerState<MusurApp> {
     return MaterialApp.router(
       routeInformationParser: goRouter.routeInformationParser,
       routerDelegate: goRouter.routerDelegate,
-      title: _appTitle,
+      title: MusurConfig.appTitle,
     );
   }
 }
