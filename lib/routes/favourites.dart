@@ -22,27 +22,9 @@ class _FavouritesRouteState extends State<FavouritesRoute> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Neumorphic(
-                    style: NeumorphicStyle(
-                      depth: -3,
-                      color: const Color(0xFFAEDBEB),
-                      boxShape: NeumorphicBoxShape.roundRect(
-                        const BorderRadius.all(
-                          Radius.circular(100),
-                        ),
-                      ),
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      icon: const Icon(Icons.menu),
-                      iconSize: 30,
-                      color: AppColors.darkBlue,
-                    ),
-                  ),
-                  const Text(
+                children: const [
+                  DrawerButton(),
+                  Text(
                     'Избранное',
                     style: TextStyle(
                       color: AppColors.darkBlue,

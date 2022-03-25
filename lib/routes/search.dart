@@ -23,21 +23,8 @@ class _SearchRouteState extends State<SearchRoute> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Neumorphic(
-                    style: NeumorphicStyle(
-                        depth: -3,
-                        color: Color(0xFFAEDBEB),
-                        boxShape: NeumorphicBoxShape.roundRect(
-                            BorderRadius.all(Radius.circular(100)))),
-                    child: IconButton(
-                        onPressed: () {
-                          Scaffold.of(context).openDrawer();
-                        },
-                        icon: const Icon(Icons.menu),
-                        iconSize: 30,
-                        color: AppColors.darkBlue),
-                  ),
+                children: const [
+                  DrawerButton(),
                   Text(
                     'Поиск',
                     style: TextStyle(

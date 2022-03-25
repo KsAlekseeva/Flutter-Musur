@@ -19,25 +19,9 @@ class _MyPlaylistState extends State<MyPlaylist> {
               padding: const EdgeInsets.only(top: 30, right: 145, left: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Neumorphic(
-                    style: NeumorphicStyle(
-                      depth: -2,
-                      color: const Color(0xFFaedbeb),
-                      boxShape: NeumorphicBoxShape.roundRect(
-                        const BorderRadius.all(Radius.circular(100)),
-                      ),
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      icon: const Icon(Icons.menu),
-                      iconSize: 30,
-                      color: AppColors.darkBlue,
-                    ),
-                  ),
-                  const Text(
+                children: const [
+                  DrawerButton(),
+                  Text(
                     "My song",
                     style: TextStyle(
                       color: AppColors.darkBlue,
@@ -90,6 +74,8 @@ class _MyPlaylistState extends State<MyPlaylist> {
             Padding(
               padding: const EdgeInsets.only(top: 17, right: 55, left: 65),
               child: ListView.separated(
+                shrinkWrap: true,
+                itemCount: 5,
                 separatorBuilder: (BuildContext context, int index) =>
                     const Divider(
                   height: 2,
@@ -97,19 +83,6 @@ class _MyPlaylistState extends State<MyPlaylist> {
                 itemBuilder: (BuildContext context, int index) {
                   return TrackTile();
                 },
-                shrinkWrap: true,
-                itemCount: 5,
-                /*ListTile(
-                          leading: Icon(Icons.play_arrow),
-                          title: Text(
-                            "New Track",
-                            style: TextStyle(
-                                color: AppColors.darkBlue,
-                                fontSize: 24,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          subtitle: Icon(Icons.favorite),
-                        )*/
               ),
             ),
           ],

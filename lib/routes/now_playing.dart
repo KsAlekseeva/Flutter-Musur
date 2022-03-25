@@ -25,23 +25,8 @@ class _PlayingRouteState extends State<PlayingRoute> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Neumorphic(
-                    style: NeumorphicStyle(
-                      depth: -3,
-                      color: const Color(0xFFAEDBEB),
-                      boxShape: NeumorphicBoxShape.roundRect(
-                        const BorderRadius.all(Radius.circular(100)),
-                      ),
-                    ),
-                    child: IconButton(
-                        onPressed: () {
-                          Scaffold.of(context).openDrawer();
-                        },
-                        icon: const Icon(Icons.menu),
-                        iconSize: 30,
-                        color: AppColors.darkBlue),
-                  ),
-                  Text(
+                  const DrawerButton(),
+                  const Text(
                     'Now playing',
                     style: TextStyle(
                         color: AppColors.darkBlue,
@@ -171,7 +156,7 @@ class _PlayingRouteState extends State<PlayingRoute> {
                     ),
                     child: IconButton(
                       onPressed: () {
-                        Scaffold.of(context).openDrawer();
+                        // TODO: implement
                       },
                       icon: const Icon(Icons.skip_previous),
                       iconSize: 35,
@@ -188,7 +173,7 @@ class _PlayingRouteState extends State<PlayingRoute> {
                     ),
                     child: IconButton(
                       onPressed: () {
-                        Scaffold.of(context).openDrawer();
+                        // TODO: implement
                       },
                       icon: const Icon(Icons.pause),
                       iconSize: 35,
@@ -205,7 +190,7 @@ class _PlayingRouteState extends State<PlayingRoute> {
                     ),
                     child: IconButton(
                       onPressed: () {
-                        Scaffold.of(context).openDrawer();
+                        // TODO: implement
                       },
                       icon: const Icon(Icons.skip_next),
                       iconSize: 35,
