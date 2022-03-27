@@ -1,15 +1,14 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:musur/musur.dart';
 
 final welcomeManagerProvider = Provider(
   (ref) => WelcomeManager(
     ref.watch(prefsProvider),
-    ref.watch(welcomeStateProvider),
+    ref.watch(welcomeStateProvider.notifier),
   ),
 );
-final welcomeStateProvider = StateProvider(
-  (ref) => WelcomeState(
+final welcomeStateProvider = StateNotifierProvider<WelcomeStateHolder, bool>(
+  (ref) => WelcomeStateHolder(
     ref.watch(prefsProvider).value.getBool(_key) ?? false,
   ),
 );
@@ -18,7 +17,7 @@ const _key = 'seen_welcome';
 
 class WelcomeManager {
   final Prefs _prefs;
-  final WelcomeState _state;
+  final WelcomeStateHolder _state;
 
   const WelcomeManager(
     this._prefs,
@@ -31,8 +30,8 @@ class WelcomeManager {
   }
 }
 
-class WelcomeState extends StateNotifier<bool> {
-  WelcomeState(bool value) : super(value);
+class WelcomeStateHolder extends StateNotifier<bool> {
+  WelcomeStateHolder(bool value) : super(value);
 
   void setSeen(bool value) {
     state = value;

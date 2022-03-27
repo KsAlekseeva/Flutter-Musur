@@ -1,15 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:musur/musur.dart';
-import 'package:spotify_sdk/models/image_uri.dart';
-import 'package:spotify_sdk/spotify_sdk.dart';
-
-double _artSize(BuildContext context) {
-  final screenWidth = MediaQuery.of(context).size.width;
-  return screenWidth / 1.5;
-}
 
 class MyPlaylist extends StatelessWidget {
   const MyPlaylist({Key? key}) : super(key: key);
@@ -34,15 +25,19 @@ class MyPlaylist extends StatelessWidget {
   }
 
   Widget _buildArt(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final artSize = screenWidth / 1.75;
     return Neumorphic(
       style: NeumorphicStyle(
         depth: -3,
         color: const Color(0xFFBDF6F7),
         boxShape: NeumorphicBoxShape.roundRect(
-          const BorderRadius.all(Radius.circular(1000.0)),
+          BorderRadius.circular(artSize),
         ),
       ),
-      child: const _CurrentTrackArt(),
+      child: CurrentTrackArt(
+        size: artSize,
+      ),
     );
   }
 
@@ -74,11 +69,12 @@ class _CurrentTrack extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final spotifyPlayerState = ref.watch(spotifyPlayerStateProvider);
+    final currentTrack = ref.watch(
+        spotifyPlayerStateProvider.select((value) => value.playerState?.track));
     return Column(
       children: [
         Text(
-          spotifyPlayerState.playerState?.track?.name ?? '',
+          currentTrack?.name ?? '',
           overflow: TextOverflow.clip,
           maxLines: 1,
           softWrap: false,
@@ -89,7 +85,7 @@ class _CurrentTrack extends ConsumerWidget {
           ),
         ),
         Text(
-          spotifyPlayerState.playerState?.track?.artist.name ?? '',
+          currentTrack?.artist.name ?? '',
           overflow: TextOverflow.clip,
           maxLines: 1,
           softWrap: false,
@@ -104,97 +100,13 @@ class _CurrentTrack extends ConsumerWidget {
   }
 }
 
-class _StubArt extends StatelessWidget {
-  const _StubArt({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final maxSize = _artSize(context);
-    return SizedBox(
-      width: maxSize,
-      height: maxSize,
-    );
-  }
-}
-
-class _CurrentTrackArt extends ConsumerWidget {
-  const _CurrentTrackArt({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final imageUri = ref.watch(spotifyPlayerStateProvider
-        .select((value) => value.playerState?.track?.imageUri));
-    if (imageUri == null) {
-      return const _StubArt();
-    }
-    return SizedBox(
-      width: _artSize(context),
-      height: _artSize(context),
-      child: _SpotifyImage(imageUri: imageUri),
-    );
-  }
-}
-
-class _SpotifyImage extends StatefulWidget {
-  const _SpotifyImage({
-    Key? key,
-    required this.imageUri,
-  }) : super(key: key);
-
-  final ImageUri? imageUri;
-
-  @override
-  State<_SpotifyImage> createState() => _SpotifyImageState();
-}
-
-class _SpotifyImageState extends State<_SpotifyImage> {
-  Uint8List? _bytes;
-
-  @override
-  void initState() {
-    super.initState();
-    _load();
-  }
-
-  @override
-  void didUpdateWidget(covariant _SpotifyImage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.imageUri?.raw != widget.imageUri?.raw) {
-      _load();
-    }
-  }
-
-  Future<void> _load() async {
-    final imageUri = widget.imageUri;
-    if (imageUri != null) {
-      final bytes = await SpotifySdk.getImage(imageUri: imageUri);
-      if (mounted) {
-        setState(() {
-          _bytes = bytes;
-        });
-      }
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_bytes == null) {
-      return const _StubArt();
-    }
-    return Image.memory(
-      _bytes!,
-      gaplessPlayback: true,
-    );
-  }
-}
-
 class _SavedTrackList extends ConsumerWidget {
   const _SavedTrackList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final contentState = ref.watch(contentStateProvider);
-    final savedTracks = contentState.savedTracks;
+    final savedTracks =
+        ref.watch(contentStateProvider.select((value) => value.savedTracks));
     return ListView.builder(
       itemCount: savedTracks.length,
       itemBuilder: (BuildContext context, int index) {

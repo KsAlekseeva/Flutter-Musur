@@ -1,4 +1,3 @@
-export 'favourites.dart';
 export 'home_route/home_route.dart';
 export 'home_route/my_playlist.dart';
 export 'now_playing.dart';
@@ -20,12 +19,6 @@ final goRouterProvider = Provider(
             const HomeRoute(),
       ),
       GoRoute(
-        name: Routes.favourites,
-        path: '/${Routes.favourites}',
-        builder: (BuildContext context, GoRouterState state) =>
-            const FavouritesRoute(),
-      ),
-      GoRoute(
         name: Routes.search,
         path: '/${Routes.search}',
         builder: (BuildContext context, GoRouterState state) =>
@@ -45,7 +38,6 @@ class Routes {
   Routes._();
 
   static const home = 'home';
-  static const favourites = 'favourites';
   static const search = 'search';
   static const nowPlaying = 'nowPlaying';
 }

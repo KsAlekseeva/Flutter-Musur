@@ -12,38 +12,17 @@ class HomeRoute extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final contentState = ref.watch(contentStateProvider);
-    if (!contentState.initialized) {
+    final initialized =
+        ref.watch(contentStateProvider.select((value) => value.initialized));
+    if (!initialized) {
       return const Center(
         child: CircularProgressIndicator(),
       );
     }
-    final welcomeManagerState = ref.watch(welcomeStateProvider);
-    return StateNotifierBuilder<bool>(
-      stateNotifier: welcomeManagerState,
-      builder: (context, value, child) {
-        if (!value) {
-          return const WelcomeScreen();
-        }
-        return const MyPlaylist();
-      },
-    );
-
-    // final player = ref.watch(spotifyPlayerProvider);
-    // final savedTracks = contentState.savedTracks;
-    // return Scaffold(
-    //   body: ListView.builder(
-    //     itemCount: savedTracks.length,
-    //     itemBuilder: (context, index) {
-    //       final track = savedTracks[index].track!;
-    //       return ListTile(
-    //         title: Text(track.name ?? ''),
-    //         onTap: () {
-    //           player.playTrack(track);
-    //         },
-    //       );
-    //     },
-    //   ),
-    // );
+    final welcomeState = ref.watch(welcomeStateProvider);
+    if (!welcomeState) {
+      return const WelcomeScreen();
+    }
+    return const MyPlaylist();
   }
 }

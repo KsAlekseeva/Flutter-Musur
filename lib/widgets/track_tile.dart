@@ -9,15 +9,17 @@ class TrackTile extends ConsumerWidget {
   const TrackTile({
     Key? key,
     required this.track,
+    this.onAdd,
   }) : super(key: key);
 
   final Track track;
+  final VoidCallback? onAdd;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final spotifyPlayer = ref.watch(spotifyPlayerProvider);
-    final currentTrack =
-        ref.watch(spotifyPlayerStateProvider).playerState?.track;
+    final currentTrack = ref.watch(
+        spotifyPlayerStateProvider.select((value) => value.playerState?.track));
     final current = track.uri == currentTrack?.uri;
 
     void handleTap() {
@@ -53,14 +55,9 @@ class TrackTile extends ConsumerWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Neumorphic(
-                style: NeumorphicStyle(
-                  depth: 4,
-                  color: const Color(0xFFCEBEEE),
-                  boxShape: NeumorphicBoxShape.roundRect(
-                    const BorderRadius.all(Radius.circular(100)),
-                  ),
-                ),
+              ButtonBase(
+                convex: true,
+                color: const Color(0xFFCEBEEE),
                 child: IconButton(
                   onPressed: handleTap,
                   icon: const Icon(Icons.play_arrow),
@@ -81,47 +78,40 @@ class TrackTile extends ConsumerWidget {
                   ),
                 ),
               ),
-              Neumorphic(
-                style: NeumorphicStyle(
-                  depth: -3,
+              if (onAdd != null)
+                ButtonBase(
                   color: const Color(0xFFCEBEEE),
-                  boxShape: NeumorphicBoxShape.roundRect(
-                    const BorderRadius.all(
-                      Radius.circular(100),
-                    ),
-                  ),
-                ),
-                child: InnerShadow(
-                  blur: 4,
-                  color: Colors.white.withOpacity(0.5),
-                  offset: const Offset(-2, -2),
                   child: InnerShadow(
                     blur: 4,
-                    color: const Color.fromRGBO(30, 38, 53, 0.25),
-                    offset: const Offset(2, 2),
-                    child: DecoratedBox(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Color(0xFFEDBFF4),
-                            Color(0xFFC7E9F7),
-                          ],
+                    color: Colors.white.withOpacity(0.5),
+                    offset: const Offset(-2, -2),
+                    child: InnerShadow(
+                      blur: 4,
+                      color: const Color.fromRGBO(30, 38, 53, 0.25),
+                      offset: const Offset(2, 2),
+                      child: DecoratedBox(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Color(0xFFEDBFF4),
+                              Color(0xFFC7E9F7),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(100.0),
+                          ),
                         ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(100.0),
+                        child: IconButton(
+                          onPressed: onAdd,
+                          icon: const Icon(Icons.my_library_add),
+                          color: AppColors.darkBlue,
                         ),
-                      ),
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.favorite),
-                        color: AppColors.darkBlue,
                       ),
                     ),
                   ),
                 ),
-              ),
             ],
           ),
         ),

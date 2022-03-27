@@ -62,6 +62,8 @@ class SpotifyPlayer {
   );
 
   CompositeSubscription? _subscription;
+  final positionSubject = BehaviorSubject<int>.seeded(0);
+  Timer? _positionTimer;
 
   Future<void> init() async {
     if (_subscription != null) {
@@ -81,8 +83,15 @@ class SpotifyPlayer {
         .listen(_spotifyPlayerState.setConnectionStatus));
     _subscription!.add(SpotifySdk.subscribePlayerContext()
         .listen(_spotifyPlayerState.setPlayerContext));
-    _subscription!.add(SpotifySdk.subscribePlayerState()
-        .listen(_spotifyPlayerState.setPlayerState));
+    _subscription!.add(SpotifySdk.subscribePlayerState().listen((event) {
+      _spotifyPlayerState.setPlayerState(event);
+      positionSubject.add(event.playbackPosition);
+      if (event.isPaused) {
+        _stopPosition();
+      } else {
+        _startPosition();
+      }
+    }));
     _subscription!.add(SpotifySdk.subscribeUserStatus()
         .listen(_spotifyPlayerState.setUserStatus));
   }
@@ -92,7 +101,57 @@ class SpotifyPlayer {
     _subscription = null;
   }
 
+  void _startPosition() {
+    if (_positionTimer == null) {
+      const interval = Duration(milliseconds: 100);
+      _positionTimer = Timer.periodic(interval, (timer) {
+        positionSubject.add(positionSubject.value + interval.inMilliseconds);
+      });
+    }
+  }
+
+  void _stopPosition() {
+    _positionTimer?.cancel();
+    _positionTimer = null;
+  }
+
   Future<void> playTrack(Track track) async {
     await SpotifySdk.play(spotifyUri: track.uri!);
+  }
+
+  Future<void> playPause() async {
+    final state = await SpotifySdk.getPlayerState();
+    if (state == null) {
+      return;
+    }
+    if (state.isPaused) {
+      SpotifySdk.resume();
+    } else {
+      SpotifySdk.pause();
+    }
+  }
+
+  Future<void> skipPrevious() {
+    return SpotifySdk.skipPrevious();
+  }
+
+  Future<void> skipNext() {
+    return SpotifySdk.skipNext();
+  }
+
+  Future<void> seek(int milliseconds) {
+    return SpotifySdk.seekTo(positionedMilliseconds: milliseconds);
+  }
+
+  // TODO: toggle is buggy, report this here https://github.com/brim-borium/spotify_sdk/issues/new/
+  // Future<void> toggleRepeat() {
+  //   return SpotifySdk.toggleRepeat();
+  // }
+  Future<void> setRepeatMode(RepeatMode value) {
+    return SpotifySdk.setRepeatMode(repeatMode: value);
+  }
+
+  Future<void> toggleShuffle() {
+    return SpotifySdk.toggleShuffle();
   }
 }

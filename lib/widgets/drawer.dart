@@ -33,11 +33,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             children: [
               const _DrawerAppTitle(),
               _DrawerItemTile(
-                text: 'Избранное',
-                icon: Icons.favorite_border,
-                onTap: () => _popToHomeAndPush(Routes.favourites),
-              ),
-              _DrawerItemTile(
                 text: 'Поиск',
                 icon: Icons.search,
                 onTap: () => _popToHomeAndPush(Routes.search),
@@ -60,13 +55,31 @@ class _DrawerAppTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ListTile(
-      title: Text(
-        MusurConfig.appTitle,
-        style: TextStyle(
-          color: AppColors.darkBlue,
-          fontSize: 24,
-          fontWeight: FontWeight.w700,
+    return Material(
+      color: Colors.transparent,
+      child: ListTile(
+        leading: SizedBox(
+          width: 24.0,
+          height: 24.0,
+          child: Center(
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              color: AppColors.darkBlue,
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+        ),
+        horizontalTitleGap: 0,
+        title: const Text(
+          MusurConfig.appTitle,
+          style: TextStyle(
+            color: AppColors.darkBlue,
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
     );
@@ -92,12 +105,13 @@ class _DrawerItemTile extends StatelessWidget {
         icon,
         color: AppColors.darkBlue,
       ),
+      horizontalTitleGap: 0,
       title: Text(
         text,
         style: const TextStyle(
           color: AppColors.darkBlue,
-          fontSize: 24,
-          fontWeight: FontWeight.w700,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
         ),
       ),
       onTap: onTap,
