@@ -2,12 +2,11 @@ import 'dart:typed_data';
 
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:musur/musur.dart';
 import 'package:spotify_sdk/models/image_uri.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
 
-double _artMaxSize(BuildContext context) {
+double _artSize(BuildContext context) {
   final screenWidth = MediaQuery.of(context).size.width;
   return screenWidth / 1.5;
 }
@@ -35,21 +34,15 @@ class MyPlaylist extends StatelessWidget {
   }
 
   Widget _buildArt(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 50.0),
-      constraints: BoxConstraints(
-        maxWidth: _artMaxSize(context),
-      ),
-      child: Neumorphic(
-        style: NeumorphicStyle(
-          depth: -3,
-          color: const Color(0xFFBDF6F7),
-          boxShape: NeumorphicBoxShape.roundRect(
-            const BorderRadius.all(Radius.circular(1000.0)),
-          ),
+    return Neumorphic(
+      style: NeumorphicStyle(
+        depth: -3,
+        color: const Color(0xFFBDF6F7),
+        boxShape: NeumorphicBoxShape.roundRect(
+          const BorderRadius.all(Radius.circular(1000.0)),
         ),
-        child: const _CurrentTrackArt(),
       ),
+      child: const _CurrentTrackArt(),
     );
   }
 
@@ -116,7 +109,7 @@ class _StubArt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final maxSize = _artMaxSize(context);
+    final maxSize = _artSize(context);
     return SizedBox(
       width: maxSize,
       height: maxSize,
@@ -129,12 +122,16 @@ class _CurrentTrackArt extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final spotifyPlayerState = ref.watch(spotifyPlayerStateProvider);
-    final imageUri = spotifyPlayerState.playerState?.track?.imageUri;
+    final imageUri = ref.watch(spotifyPlayerStateProvider
+        .select((value) => value.playerState?.track?.imageUri));
     if (imageUri == null) {
       return const _StubArt();
     }
-    return _SpotifyImage(imageUri: imageUri);
+    return SizedBox(
+      width: _artSize(context),
+      height: _artSize(context),
+      child: _SpotifyImage(imageUri: imageUri),
+    );
   }
 }
 
@@ -184,7 +181,10 @@ class _SpotifyImageState extends State<_SpotifyImage> {
     if (_bytes == null) {
       return const _StubArt();
     }
-    return Image.memory(_bytes!);
+    return Image.memory(
+      _bytes!,
+      gaplessPlayback: true,
+    );
   }
 }
 
