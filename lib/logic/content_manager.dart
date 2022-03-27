@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:musur/musur.dart';
+import 'package:spotify/spotify.dart';
 
 final contentStateProvider =
     StateNotifierProvider<ContentStateHolder, ContentState>(

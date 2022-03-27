@@ -4,11 +4,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 final prefsProvider = Provider((ref) => Prefs());
 
 class Prefs {
-  SharedPreferences? _prefs;
-  SharedPreferences get prefs => _prefs!;
+  SharedPreferences? _value;
+  SharedPreferences get value => _value!;
 
   Future<void> init() async {
-    _prefs = await SharedPreferences.getInstance();
+    _value = await SharedPreferences.getInstance();
   }
 
   static const spotifyCredentials = 'spotifyCredentials';
