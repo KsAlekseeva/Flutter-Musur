@@ -38,6 +38,21 @@ class _MusurAppState extends ConsumerState<MusurApp> {
       routeInformationParser: goRouter.routeInformationParser,
       routerDelegate: goRouter.routerDelegate,
       title: MusurConfig.appTitle,
+      scrollBehavior: const _ScrollBehavior(),
     );
+  }
+}
+
+class _ScrollBehavior extends ScrollBehavior {
+  const _ScrollBehavior();
+
+  @override
+  Widget buildOverscrollIndicator(
+    BuildContext context,
+    Widget child,
+    ScrollableDetails details,
+  ) {
+    // Remove overscroll glow.
+    return child;
   }
 }

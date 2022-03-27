@@ -44,6 +44,7 @@ dependencies:
   url_launcher: ^6.0.20
   flutter_neumorphic: ^3.0.3
   flutter_state_notifier: ^0.7.1
+  rxdart: ^0.27.3
 
 dev_dependencies:
   flutter_test:
@@ -74,8 +75,6 @@ flutter:
   assets:
     - assets/yoga.png
     - assets/woman.png
-    - assets/headphones.png
-  #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

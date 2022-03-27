@@ -27,15 +27,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       child: SafeArea(
         child: Container(
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: FractionalOffset.bottomLeft,
-              end: FractionalOffset.topRight,
-              colors: [
-                Color(0xFFE1B2F2),
-                Color(0xFFA2C3E1),
-                Color(0xFFC1FFFB),
-              ],
-            ),
+            gradient: AppColors.mainGradient,
           ),
           child: ListView(
             children: [

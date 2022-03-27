@@ -54,4 +54,14 @@ class AppColors {
   AppColors._();
 
   static const darkBlue = Color(0xFF313D69);
+
+  static const mainGradient = LinearGradient(
+    begin: Alignment.bottomLeft,
+    end: Alignment.topRight,
+    colors: [
+      Color(0xFFE1B2F2),
+      Color(0xFFA2C3E1),
+      Color(0xFFC1FFFB),
+    ],
+  );
 }
