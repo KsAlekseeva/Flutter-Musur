@@ -17,14 +17,26 @@ final contentManagerProvider = Provider(
 class ContentStateHolder extends StateNotifier<ContentState> {
   ContentStateHolder() : super(ContentState());
 
-  setInitilized(bool initialized) {
+  void setInitilized(bool initialized) {
     state = state.copyWith(
       initialized: initialized,
     );
   }
 
-  setSavedTracks(List<TrackSaved> tracks) {
+  void setSavedTracks(List<TrackSaved> tracks) {
     state = state.copyWith(savedTracks: tracks);
+  }
+
+  void addSavedTrack(TrackSaved track) {
+    final copied = state.savedTracks.toList();
+    copied.insert(0, track);
+    state = state.copyWith(savedTracks: copied);
+  }
+
+  void removeSavedTrack(TrackSaved track) {
+    final copied = state.savedTracks.toList();
+    copied.remove(track);
+    state = state.copyWith(savedTracks: copied);
   }
 }
 
@@ -45,5 +57,27 @@ class ContentManager {
     final tracks = await _spotifyApiManager.api.tracks.me.saved.all();
     _contentState.setSavedTracks(tracks.toList());
     _contentState.setInitilized(true);
+  }
+
+  static const _searchLimit = 30;
+  Future<List<Page<dynamic>>> search(String query, int offset) {
+    return _spotifyApiManager.api.search.get(query).getPage(
+          _searchLimit,
+          offset,
+        );
+  }
+
+  Future<void> saveTrack(Track track) async {
+    await _spotifyApiManager.api.tracks.me.saveOne(track.id!);
+    _contentState.addSavedTrack(
+      TrackSaved()
+        ..track = track
+        ..addedAt = DateTime.now(),
+    );
+  }
+
+  Future<void> removeTrack(TrackSaved track) async {
+    await _spotifyApiManager.api.tracks.me.removeOne(track.track!.id!);
+    _contentState.removeSavedTrack(track);
   }
 }

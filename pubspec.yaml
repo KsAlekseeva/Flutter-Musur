@@ -38,7 +38,11 @@ dependencies:
   go_router: ^3.0.4
   freezed_annotation: ^1.1.0
   json_annotation: ^4.4.0
-  spotify: ^0.7.0
+  # spotify: ^0.7.0
+  spotify:
+    git: # TODO: should be replaced to pub version when https://github.com/rinukkusu/spotify-dart/pull/120 is merged and published
+      url: git@github.com:nt4f04uNd/spotify-dart.git
+      ref: delete-saved
   spotify_sdk: ^2.2.0
   shared_preferences: ^2.0.13
   url_launcher: ^6.0.20

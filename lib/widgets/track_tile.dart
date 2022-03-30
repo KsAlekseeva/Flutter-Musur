@@ -9,11 +9,11 @@ class TrackTile extends ConsumerWidget {
   const TrackTile({
     Key? key,
     required this.track,
-    this.onAdd,
+    this.trailing,
   }) : super(key: key);
 
   final Track track;
-  final VoidCallback? onAdd;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -78,7 +78,7 @@ class TrackTile extends ConsumerWidget {
                   ),
                 ),
               ),
-              if (onAdd != null)
+              if (trailing != null)
                 ButtonBase(
                   color: const Color(0xFFCEBEEE),
                   child: InnerShadow(
@@ -103,11 +103,7 @@ class TrackTile extends ConsumerWidget {
                             Radius.circular(100.0),
                           ),
                         ),
-                        child: IconButton(
-                          onPressed: onAdd,
-                          icon: const Icon(Icons.my_library_add),
-                          color: AppColors.darkBlue,
-                        ),
+                        child: trailing
                       ),
                     ),
                   ),

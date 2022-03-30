@@ -105,12 +105,21 @@ class _SavedTrackList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final contentManager = ref.watch(contentManagerProvider);
     final savedTracks =
         ref.watch(contentStateProvider.select((value) => value.savedTracks));
     return ListView.builder(
       itemCount: savedTracks.length,
       itemBuilder: (BuildContext context, int index) {
-        return TrackTile(track: savedTracks[index].track!);
+        final savedTrack = savedTracks[index];
+        return TrackTile(
+          track: savedTrack.track!,
+          trailing: IconButton(
+            onPressed: () => contentManager.removeTrack(savedTrack),
+            icon: const Icon(Icons.remove_circle_outline),
+            color: AppColors.darkBlue,
+          ),
+        );
       },
     );
   }

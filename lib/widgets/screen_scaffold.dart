@@ -75,9 +75,13 @@ class ScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                 opacity: 0.0,
                 child: trailing,
               ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: title,
+          Expanded(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: title,
+              ),
+            ),
           ),
           trailing ??
               Opacity(

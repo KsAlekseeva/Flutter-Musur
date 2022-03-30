@@ -9,17 +9,11 @@ import 'package:musur/musur.dart';
 import 'package:spotify/spotify.dart';
 
 final spotifyApiManagerProvider = Provider(
-  (ref) => SpotifyApiManager(
-    ref.watch(prefsProvider),
-  ),
+  (ref) => SpotifyApiManager(),
 );
 
 /// Initializes [SpotifyApi] and [SpotifySdk].
 class SpotifyApiManager {
-  final Prefs _prefs;
-
-  SpotifyApiManager(this._prefs);
-
   SpotifyApi? _api;
   SpotifyApi get api => _api!;
 
@@ -41,7 +35,6 @@ class SpotifyApiManager {
         redirectUrl: MusurConfig.spotifyApiRedirectUri,
         scope: MusurConfig.spotifyApiScopes,
       );
-      // TODO: handle token restoration, perhaps store it to prefs. See `spotify_sdk`/`spotify` packages READMEs
       return accessToken;
     } on PlatformException catch (ex) {
       switch (ex.code) {
@@ -72,7 +65,6 @@ class SpotifyApiManager {
             'https://play.google.com/store/apps/details?id=$spotifyPackageName');
       }
     } else if (Platform.isIOS) {
-      // TODO: this is untested
       launch(
         'itms-apps://itunes.apple.com/app/spotify-new-music-and-podcasts/id324684580',
       );

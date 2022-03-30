@@ -2,7 +2,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:musur/musur.dart';
 import 'package:spotify_sdk/models/player_options.dart';
-import 'package:spotify_sdk/spotify_sdk.dart' as spotifySdkRepeatMode
+import 'package:spotify_sdk/spotify_sdk.dart' as spotify_sdk_repeat_mode
     show RepeatMode;
 
 class PlayingRoute extends StatefulWidget {
@@ -165,14 +165,14 @@ class _RepeatModeButton extends ConsumerWidget {
       child: IconButton(
         padding: EdgeInsets.zero,
         onPressed: () {
-          spotifySdkRepeatMode.RepeatMode _iterateRepeatMode() {
+          spotify_sdk_repeat_mode.RepeatMode _iterateRepeatMode() {
             switch (repeatMode ?? RepeatMode.off) {
               case RepeatMode.off:
-                return spotifySdkRepeatMode.RepeatMode.track;
+                return spotify_sdk_repeat_mode.RepeatMode.track;
               case RepeatMode.track:
-                return spotifySdkRepeatMode.RepeatMode.context;
+                return spotify_sdk_repeat_mode.RepeatMode.context;
               case RepeatMode.context:
-                return spotifySdkRepeatMode.RepeatMode.off;
+                return spotify_sdk_repeat_mode.RepeatMode.off;
             }
           }
 
