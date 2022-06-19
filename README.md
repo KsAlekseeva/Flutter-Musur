@@ -1,6 +1,6 @@
 # Musur
 
-A new Flutter project.
+A minimal Spotify client written in Flutter.
 
 ## Design 
 
@@ -10,12 +10,13 @@ This link can redirect you to our [Figma project](https://www.figma.com/file/4Yj
 
 This section is only for collaborators.
 
-The built app must be signed, otherwise Spotify SDK won't work.
+The project with its key hash should be added to the [Spotify API Dashboard](https://developer.spotify.com/dashboard/),
+and then the app's build should be signed with this key - otherwise Spotify SDK won't work.
 
-To do that, after cloning a project, add `android/key.properties` file with the
+[A guide to generate a keystore.](https://docs.flutter.dev/deployment/android#create-an-upload-keystore)
+
+To sign the app build, after cloning a project, add `android/key.properties` file with the
 following contents:
-
-
 
 ```
 storePassword=<password>
